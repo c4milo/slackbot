@@ -1,6 +1,6 @@
 GHACCOUNT   := c4milo
 NAME        := slackbot
-VERSION     := v1.0.0
+VERSION     := v1.1.0
 BRANCH      := $(shell git rev-parse --abbrev-ref HEAD)
 LDFLAGS     := -ldflags "-X main.Version=$(VERSION) -X main.Name=$(NAME)"
 
