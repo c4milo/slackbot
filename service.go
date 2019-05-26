@@ -6,12 +6,16 @@ import (
 	"os/exec"
 )
 
+// Service implements a module for the service utility found in RedHat/Fedora
+// systems as well as in Ubuntu versions before 15.04
+// Available states are: started, restarted, reloaded and stopped
 type Service struct {
 	task   `yaml:",inline"`
 	path   string
 	states map[string]string
 }
 
+// Init initializes the service module
 func (s *Service) Init() error {
 	path, err := exec.LookPath("service")
 	if err != nil {
@@ -31,10 +35,12 @@ func (s *Service) Init() error {
 	return nil
 }
 
+// Validate does nothing in this module
 func (s *Service) Validate() error {
 	return nil
 }
 
+// Apply applies the declared state for a given service
 func (s *Service) Apply() ([]byte, error) {
 	running, err := s.state()
 	if err != nil {
@@ -59,6 +65,7 @@ func (s *Service) Apply() ([]byte, error) {
 	return cmd.CombinedOutput()
 }
 
+// state returns the current state of the service
 func (s *Service) state() (bool, error) {
 	cmd := exec.Command(s.path, s.Name, "status")
 	output, err := cmd.CombinedOutput()

@@ -9,7 +9,7 @@ import (
 	yaml "gopkg.in/yaml.v3"
 )
 
-// SlackBook defines a list of tasks to run.
+// SlackBook defines a list of tasks to run
 type SlackBook struct {
 	path string
 
@@ -98,8 +98,8 @@ func (sb *SlackBook) UnmarshalYAML(value *yaml.Node) error {
 	return nil
 }
 
-// Run runs SlackBook tasks in user defined order, skipping running notified tasks in the declared order and instead running them
-// at the very end.
+// Run runs SlackBook tasks in user defined order, skipping running notified
+// tasks in the declared order and instead running them at the end of the SlackBook.
 func (s *SlackBook) Run() error {
 	for _, name := range s.tasks {
 		fmt.Printf("-----> %s... \n", name)

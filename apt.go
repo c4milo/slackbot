@@ -8,12 +8,15 @@ import (
 	"regexp"
 )
 
+// Apt implements a module for apt-get, found in debian-based systems.
+// Available states are: present or absent
 type Apt struct {
 	task          `yaml:",inline"`
 	path          string
 	dpkgqueryPath string
-	Package       string `yaml:"package"`
-	UpdateIndex   bool   `yaml:"update_index"`
+	// Package is the name of the package to install or remove
+	Package     string `yaml:"package"`
+	UpdateIndex bool   `yaml:"update_index"`
 }
 
 func (a *Apt) Init() error {
@@ -29,6 +32,9 @@ func (a *Apt) Init() error {
 	}
 
 	a.path = path
+	if a.State == "" {
+		a.State = "present"
+	}
 	return nil
 }
 
