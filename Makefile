@@ -26,7 +26,6 @@ build: ## Builds a distributable binary for multiple platforms
 	@rm -rf build/
 	@gox $(LDFLAGS) \
 	-osarch="darwin/amd64 darwin/386" \
-	-osarch="windows/amd64 windows/386" \
 	-osarch="freebsd/386 freebsd/amd64 freebsd/arm freebsd/arm64" \
 	-osarch="linux/amd64 linux/386 linux/arm linux/arm64" \
 	-osarch="solaris/amd64" \
