@@ -15,8 +15,9 @@ type Apt struct {
 	path          string
 	dpkgqueryPath string
 	// Package is the name of the package to install or remove
-	Package     string `yaml:"package"`
-	UpdateIndex bool   `yaml:"update_index"`
+	Package string `yaml:"package"`
+	// UpdateIndex determines whether to update the local package index cache
+	UpdateIndex bool `yaml:"update_index"`
 }
 
 func (a *Apt) Init() error {
