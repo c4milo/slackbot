@@ -58,6 +58,7 @@ func (f *File) Apply() ([]byte, error) {
 	}
 
 	if f.State == "absent" {
+		f.changed = true
 		return nil, os.Remove(f.DestPath)
 	}
 
