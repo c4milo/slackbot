@@ -1,0 +1,46 @@
+# - name: "Update package index"
+#   apt:
+#     update_index: yes
+
+- name: "Install apache2 and php5 packages"
+  apt:
+    package: "libapache2-mod-php5"
+
+- name: "Make mod_dir try to find index.php first"
+  file:
+    content: |
+      <IfModule mod_dir.c>
+        DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm
+      </IfModule>
+    dest: /etc/apache2/mods-available/dir.conf
+    owner: root
+    group: root
+  notify: "Restart apache2"
+
+- name: "Render index.php"
+  file:
+    content: |
+      <?php
+      header("Content-Type: text/plain");
+      echo "Hello, world!\n";
+    dest: /var/www/html/index.php
+  notify: "Reload apache2" # Not needed but I left it anyways as example
+
+- name: "Start apache2"
+  service:
+    name: apache2
+    state: started
+
+# Handler tasks.
+# They only run through notifications
+- name: "Restart apache2"
+  service:
+    name: apache2
+    state: restarted
+  handler: yes
+
+- name: "Reload apache2"
+  service:
+    name: apache2
+    state: reloaded
+  handler: yes
