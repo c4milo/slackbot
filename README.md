@@ -1,5 +1,5 @@
 # Slackbot
-[![GoDoc](https://godoc.org/github.com/hooklift/gowsdl?status.svg)](https://godoc.org/github.com/hooklift/gowsdl)
+[![GoDoc](https://godoc.org/github.com/c4milo/slackbot?status.svg)](https://godoc.org/github.com/c4milo/slackbot)
 
 Primitive configuration management tool
 
