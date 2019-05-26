@@ -102,8 +102,6 @@ func (sb *SlackBook) UnmarshalYAML(value *yaml.Node) error {
 // tasks in the declared order and instead running them at the end of the SlackBook.
 func (s *SlackBook) Run() error {
 	for _, name := range s.tasks {
-		fmt.Printf("-----> %s... \n", name)
-
 		t := s.Tasks[name]
 
 		// Handler tasks can only be run through notifications
@@ -111,6 +109,7 @@ func (s *SlackBook) Run() error {
 			continue
 		}
 
+		fmt.Printf("-----> %s... \n", name)
 		out, err := t.Apply()
 		if len(out) > 0 {
 			log.Println(string(out[:]))
