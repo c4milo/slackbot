@@ -13,20 +13,34 @@ import (
 	"golang.org/x/crypto/blake2b"
 )
 
+// File defines a file management module
+// Available states are: present or absent
 type File struct {
-	task     `yaml:",inline"`
-	Content  string      `yaml:"content"`
-	Mode     os.FileMode `yaml:"mode"`
-	Owner    string      `yaml:"owner"`
-	Group    string      `yaml:"group"`
-	DestPath string      `yaml:"dest"`
+	task `yaml:",inline"`
+	// Content declares the content of the file
+	Content string `yaml:"content"`
+	// Mode declares the permissions to set to the file
+	Mode os.FileMode `yaml:"mode"`
+	// Owner declares the user who owns the file
+	Owner string `yaml:"owner"`
+	// Group declares the group who has access to the file
+	Group string `yaml:"group"`
+	// DestPath is the file's destination path
+	DestPath string `yaml:"dest"`
+	// checksum is the hash of the file content. Used to determine whether or not
+	// the file content needs to be rewritten.
 	checksum []byte
 }
 
+// Init does nothing in this module
 func (f *File) Init() error {
+	if f.State == "" {
+		f.State = "present"
+	}
 	return nil
 }
 
+// Validate validates whether a destination path was declared
 func (f *File) Validate() error {
 	if f.DestPath == "" {
 		return errors.New("file: destination path required")
@@ -34,9 +48,18 @@ func (f *File) Validate() error {
 	return nil
 }
 
+// Apply applies the declared file state if needed.
 func (f *File) Apply() ([]byte, error) {
 	currentFile := f.state()
 	var err error
+
+	if currentFile == nil && f.State == "absent" {
+		return nil, nil
+	}
+
+	if f.State == "absent" {
+		return nil, os.Remove(f.DestPath)
+	}
 
 	file := new(os.File)
 	if currentFile == nil {
@@ -110,6 +133,7 @@ func (f *File) Apply() ([]byte, error) {
 	return nil, nil
 }
 
+// state retrieves the current metadata state of the file
 func (f *File) state() *File {
 	meta, err := os.Stat(f.DestPath)
 	if os.IsNotExist(err) {

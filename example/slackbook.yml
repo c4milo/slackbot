@@ -15,10 +15,12 @@
     dest: /etc/apache2/mods-available/dir.conf
     owner: root
     group: root
+    mode: 0644
   notify: "Restart apache2"
 
 - name: "Render index.php"
   file:
+    state: present
     content: |
       <?php
       header("Content-Type: text/plain");
