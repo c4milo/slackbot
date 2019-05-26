@@ -9,11 +9,11 @@ import (
 )
 
 type Apt struct {
+	task          `yaml:",inline"`
 	path          string
 	dpkgqueryPath string
 	Package       string `yaml:"package"`
 	UpdateIndex   bool   `yaml:"update_index"`
-	task          `yaml:",inline"`
 }
 
 func (a *Apt) Init() error {

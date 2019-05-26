@@ -14,12 +14,12 @@ import (
 )
 
 type File struct {
+	task     `yaml:",inline"`
 	Content  string      `yaml:"content"`
 	Mode     os.FileMode `yaml:"mode"`
 	Owner    string      `yaml:"owner"`
 	Group    string      `yaml:"group"`
 	DestPath string      `yaml:"dest"`
-	task     `yaml:",inline"`
 	checksum []byte
 }
 
